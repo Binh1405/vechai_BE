@@ -40,7 +40,7 @@ emailHelper.createSingleEmailFromTemplate = async (
   toEmail
 ) => {
   try {
-    const template = await User.findOne({ template_key });
+    const template = await Template .findOne({ template_key });
     if (!template)
       throw new Error(
         "Invalid template key, do you want to create new template instead?"
@@ -51,6 +51,7 @@ emailHelper.createSingleEmailFromTemplate = async (
       subject: template.subject,
       html: template.html,
     };
+    console.log("template", template)
     template.variables.forEach((key) => {
       if (!variablesObject[key]) throw new Error("missing value of key");
       let regPattern = new RegExp(`%${key}%`, "g");
@@ -66,6 +67,10 @@ emailHelper.createSingleEmailFromTemplate = async (
 emailHelper.send = async (data) => {
   try {
     if (!data) throw new Error("need emailing content data");
+    console.log("data", {
+      user: "tan.vopm@gmail.com",
+      pass: "uahouikttppyrexn",
+    },);
     let transporter = nodeMailer.createTransport({
       service: "gmail",
       auth: {
